@@ -1,64 +1,80 @@
 # Daily English Brief
 
 매일 아침 6시 30분(KST)에 실행되는 Claude Code 루틴의 유일한 지시서다.
-이 파일을 끝까지 읽고 아래 절차대로 뉴스를 수집해서, 한국어 3줄 요약과 영어 번역을 Slack `#daily-english-brief` 채널에 게시한다.
+이 파일을 끝까지 읽고 아래 절차대로 소식을 수집해서, 영어 5줄 요약과 한국어 번역을 Slack `#daily-english-brief` 채널에 게시한다.
 
 ## 독자와 목적
 
 - 데이터 엔지니어로 일하면서 영어를 공부하는 사람
-- 목적은 두 가지다: ① 오늘의 주요 뉴스·기술 동향 파악 ② 같은 내용을 영어로 읽으며 실무·뉴스 영어 표현 익히기
-- 아침 출근 전 10분 안에 한국어와 영어를 번갈아 읽을 수 있어야 한다
+- 목적은 두 가지다: ① 평소 접하지 않던 분야의 새로운 소식 읽기 ② 영어 원문 표현으로 실무·뉴스 영어 익히기
+- 아침 출근 전 10분 안에 영어와 한국어를 번갈아 읽을 수 있어야 한다
+- 독자는 매일 아침 `#daily-news-brief`(한국·미국 뉴스, AI, 데이터 엔지니어링 소식)도 읽는다. 그 분야와 겹치면 새로운 내용이 아니어서 재미가 없으므로, 이 브리핑은 **그 분야를 다루지 않는다**
 
 ## 수집 범위
 
 | 섹션 | 내용 | 개수 | 기간 |
 |---|---|---|---|
-| 🇰🇷 한국 뉴스 | 경제·정치·사회·산업 중 가장 많이 읽히고 이야기되는 이슈 | 3개 | 직전 48시간 |
-| 🇺🇸 미국 뉴스 | 경제·정치·사회·산업 중 가장 많이 읽히고 이야기되는 이슈 | 3개 | 직전 48시간 |
-| 🤖 AI·데이터 | OpenAI·Anthropic(Claude)·Google 등 AI 기술, 데이터 엔지니어링에 도움되는 소식 | 3개 | 직전 7일 |
+| 🌍 세계 뉴스 | 한국·미국을 뺀 국제 이슈 (유럽, 중국, 일본, 중동, 아프리카, 중남미 등) | 2개 | 직전 48시간 |
+| 🔬 과학·건강·환경 | 연구 결과, 우주, 의학·건강, 기후·환경 | 2개 | 직전 7일 |
+| 💼 엔지니어링·커리어 | 장애 회고(postmortem), 기술 에세이, Hacker News 화제 글, 개발 조직 문화, 원격 근무·채용 동향 | 2개 | 직전 7일 |
 
-- 한국·미국 뉴스는 한 섹션 안에서 분야가 겹치지 않게 고른다 (예: 경제 3개보다 경제·정치·사회 각 1개)
-- 인기 기준: 여러 주요 매체가 동시에 다룬 이슈, "많이 본 뉴스"/"Most read" 랭킹, X·Reddit 언급량
+- 기사 수를 줄이는 대신 한 기사를 5줄로 깊게 읽는다. 전체 분량은 영어 문장 30개(6개 기사 × 5줄)로, 아침 10분 안에 읽을 수 있는 양이다
+
+- 원문이 영어인 기사·글을 고른다. 영어 원문 표현을 살려 요약하는 것이 이 브리핑의 핵심이다
+- 인기 기준: 여러 주요 매체가 동시에 다룬 이슈, "Most read" 랭킹, Hacker News·Reddit·X 언급량
 - 같은 이슈를 다룬 기사가 여러 개면 하나로 합치고, 가장 신뢰도 높은 원문 링크 하나를 쓴다
 
-### 🤖 AI·데이터 섹션 소스
+### 🌍 세계 뉴스
 
-아래 세 종류에서 고르되, 가능하면 **서로 다른 종류에서 하나씩** 고른다.
+- 한국이나 미국이 주인공인 이슈는 고르지 않는다 (예: 한미 정상회담, 미국 대선). 다른 나라가 중심이고 한국·미국은 관련국 정도인 이슈는 괜찮다
+- 두 기사는 지역이 겹치지 않게 고른다 (예: 유럽 1개, 아시아 1개)
+- 분야도 가능하면 다르게 고른다 (예: 정치 1개, 경제 1개)
 
-1. **공식 문서·블로그**: 새 모델·API·기능 출시, 릴리스 노트, 공식 가이드
-   - AI: OpenAI(openai.com, platform.openai.com), Anthropic(anthropic.com, docs.anthropic.com), Google(blog.google, ai.google.dev), Meta AI, Hugging Face
-   - 데이터: Databricks, Snowflake, dbt Labs, AWS, Google Cloud(BigQuery), Apache 프로젝트(Airflow, Spark, Kafka, Iceberg, Flink) 릴리스 노트, 기업 기술 블로그(Netflix·Uber·Airbnb·토스·우아한형제들·카카오 등)
-2. **뉴스**: TechCrunch, CNBC, Bloomberg, BigDATAwire(hpcwire.com), ZDNet Korea, AI타임스
-3. **커뮤니티(Reddit·X)**: r/MachineLearning, r/LocalLLaMA, r/dataengineering, r/ClaudeAI, r/OpenAI 등에서 화제가 된 글이나 X에서 바이럴된 발표·스레드
+### 🔬 과학·건강·환경
 
-데이터 엔지니어가 **실무에 바로 써먹을 수 있는 것**(새 기능, 성능 개선, 가격 변경, 마이그레이션 팁, 아키텍처 사례)을 우선한다. 단순 투자 유치·인수합병 소식은 후순위다.
+- 두 기사는 과학, 건강, 환경 중 서로 다른 분야에서 고른다
+- 논문 발표, 우주 탐사, 신약·치료법, 공중보건, 기후·에너지·생태 소식이 대상이다
+- AI 모델·제품 소식은 `#daily-news-brief`가 다루므로 고르지 않는다. 과학 연구에 AI를 쓴 사례는 연구 결과가 중심이면 괜찮다
+
+### 💼 엔지니어링·커리어
+
+`#daily-news-brief`의 AI·데이터 섹션은 **출시·릴리스·뉴스**를 다룬다. 이 섹션은 **글·경험·토론**을 다룬다. 새 제품·기능·버전 출시, 투자·인수합병 소식은 고르지 않는다.
+
+아래 세 종류에서 고르되, 두 기사는 가능하면 **서로 다른 종류에서** 고른다.
+
+1. **기업 기술 블로그·장애 회고**: 아키텍처 경험담, 마이그레이션 후기, 장애 원인 분석
+   - Netflix, Uber, Airbnb, Stripe, Cloudflare, GitHub, Shopify, Slack, Discord, Dropbox 등의 엔지니어링 블로그
+2. **에세이·업계 분석**: 개발 문화, 팀 운영, 커리어, 채용·원격 근무 동향
+   - The Pragmatic Engineer, LeadDev, InfoQ, Stack Overflow Blog, 개인 기술 블로그
+3. **커뮤니티(Hacker News·Reddit·X)**: Hacker News 상위에 오른 글과 토론, r/ExperiencedDevs, r/dataengineering, r/programming, r/cscareerquestions 등에서 화제가 된 글, X에서 바이럴된 스레드
+
+데이터 엔지니어가 **업무에 가져다 쓸 수 있는 교훈**(설계 판단, 장애 대응 방식, 협업·커뮤니케이션 방법)이 있는 글을 우선한다.
 
 ### 소스 가이드
 
 루틴 실행 환경에서는 접근이 제한되므로 아래 규칙을 따른다.
 
-- **WebFetch는 거의 모든 언론사·Reddit·X 페이지가 막혀 있다.** 기사 페이지를 열려고 시간을 쓰지 말고 WebSearch 결과(제목, URL, 요약)로 확인한다. 공식 문서·블로그는 WebFetch가 될 수 있으니 한 번만 시도하고, 실패하면 검색 결과로 확인한다
-- **WebSearch의 `allowed_domains`에 넣으면 요청 전체가 거부되는 매체**: Reuters, AP, BBC, NYT, The Guardian, The Verge, Ars Technica, USA Today, The Independent, 연합뉴스(yna.co.kr). 이 도메인은 도메인 지정에 넣지 않는다
-- **WebFetch 확인 결과 (2026-10-05 테스트 실행)**: anthropic.com/news는 열린다(공식 글의 날짜·URL 확인에 쓴다). iceberg.apache.org는 막혀 있다(Apache 릴리스는 GitHub 릴리스 페이지나 검색 결과로 확인한다). 그 외 공식 문서 사이트는 미검증
-- Reddit·X는 직접 접근이 안 되므로 커뮤니티 반응을 다룬 기사나 검색 결과를 찾는다. 반응은 검색 결과·기사에 나온 내용만 쓴다. 커뮤니티 출처는 뉴스보다 찾기 어려워 빠지기 쉬우니, AI·데이터 섹션을 고르기 전에 **아래 검색어로 최소 2~3번은 먼저 검색한다**
-  - `site:reddit.com r/dataengineering` + 주제어, `r/LocalLLaMA` + 모델명, `r/ClaudeAI`, `r/OpenAI`
-  - `"Reddit users" AI`, `"went viral on X" AI`, `"developers on X" reacted`, `"Hacker News" discussion` + 주제어
-  - 검색해도 기간 안의 커뮤니티 화제를 찾지 못하면 공식 문서·뉴스로 채우고, 최종 결과에 그 사실을 남긴다
-- 아래 매체는 검색 결과에 잘 나오고 링크로 쓸 수 있다
+- **WebFetch는 거의 모든 언론사·Reddit·X 페이지가 막혀 있다.** 기사 페이지를 열려고 시간을 쓰지 말고 WebSearch 결과(제목, URL, 요약)로 확인한다. 기업 기술 블로그·개인 블로그는 WebFetch가 될 수 있으니 한 번만 시도하고, 실패하면 검색 결과로 확인한다
+- **WebSearch의 `allowed_domains`에 넣으면 요청 전체가 거부되는 매체**: Reuters, AP, BBC, NYT, The Guardian, The Verge, Ars Technica, USA Today, The Independent. 이 도메인은 도메인 지정에 넣지 않는다 (도메인 지정 없이 검색하면 결과에 나올 수 있고, 그 URL은 링크로 써도 된다)
+- 커뮤니티 출처는 뉴스보다 찾기 어려워 빠지기 쉬우니, 💼 섹션을 고르기 전에 **아래 검색어로 최소 2~3번은 먼저 검색한다**. 반응은 검색 결과·기사에 나온 내용만 쓴다
+  - `site:news.ycombinator.com` + 주제어, `"Hacker News"` + `postmortem`/`outage`/`engineering`
+  - `site:reddit.com r/ExperiencedDevs`, `site:reddit.com r/dataengineering` + 주제어
+  - `"went viral on X" engineer`, `"developers on X" reacted`
+  - 검색해도 기간 안의 커뮤니티 화제를 찾지 못하면 기술 블로그·에세이로 채우고, 최종 결과에 그 사실을 남긴다
+- 아래 매체는 링크 후보다. 이 루틴에서 아직 검증하지 않았으므로, 검색 결과에 잘 나오지 않으면 다른 매체를 쓴다. 목록에 없는 매체도 검색 결과에 나오면 써도 된다
 
 | 섹션 | 매체 |
 |---|---|
-| 한국 | 머니투데이(mt.co.kr), 파이낸셜뉴스(fnnews.com), 아주경제(ajunews.com), 이투데이(etoday.co.kr), 서울신문(seoul.co.kr), 한국일보(hankookilbo.com), 경향신문(khan.co.kr), 세계일보(segye.com), 노컷뉴스(nocutnews.co.kr), 뉴시스(newsis.com), 헤럴드경제(heraldcorp.com), SBS(news.sbs.co.kr), 다음뉴스(v.daum.net) |
-| 미국 | NPR, NBC News, CBS News, ABC News, CNN, CNBC, Bloomberg, Yahoo News(AP 전재 기사 포함) |
-
-목록에 없는 매체도 검색 결과에 나오면 써도 된다.
+| 🌍 세계 뉴스 | Al Jazeera, DW, France 24, Euronews, NPR(World), CNN(World), CNBC, Bloomberg, Nikkei Asia, South China Morning Post, Yahoo News(AP·Reuters 전재 기사 포함) |
+| 🔬 과학·건강·환경 | Nature(News), Science(science.org), New Scientist, Scientific American, NASA, ScienceDaily, Phys.org, STAT News, NPR(Health·Science), CNN(Health) |
+| 💼 엔지니어링·커리어 | 위 "💼 엔지니어링·커리어"의 기술 블로그·에세이 매체, InfoQ, Hacker News |
 
 ## 중복 방지
 
-게시 전에 `#daily-english-brief` 채널의 최근 3일치 브리핑을 읽고 이미 소개한 기사는 제외한다.
+게시 전에 `#daily-english-brief` 채널의 최근 7일치 브리핑을 읽고 이미 소개한 기사는 제외한다. 🔬·💼 섹션의 수집 기간이 7일이므로 7일치를 본다.
 
 - 채널을 읽으면 부모 메시지만 나오고, 기사 대부분은 스레드 답글에 있다. 부모 메시지마다 스레드 답글까지 모두 읽어서 이미 소개한 기사 제목과 URL 목록을 만든다
-- AI·데이터 섹션은 기간이 7일이므로 특히 겹치기 쉽다. 같은 발표를 다른 매체 기사로 다시 소개하지 않는다
+- 같은 이슈를 다른 매체 기사로 다시 소개하지 않는다
 - 같은 이슈에 중요한 새 전개가 있으면 그 새 기사로 다시 소개할 수 있다
 - 조건에 맞는 기사가 부족하면 억지로 채우지 말고 있는 만큼만 쓴다
 
@@ -67,11 +83,11 @@
 **부모 메시지 1개 + 스레드 답글 3개**로 나눈다. 채널에는 부모 메시지만 보이게 해서 채널을 깔끔하게 유지한다.
 
 1. **부모 메시지 (채널)**: 오늘의 헤드라인 + 오늘의 표현
-2. 스레드 ① 🇰🇷 한국 뉴스
-3. 스레드 ② 🇺🇸 미국 뉴스
-4. 스레드 ③ 🤖 AI·데이터
+2. 스레드 ① 🌍 세계 뉴스
+3. 스레드 ② 🔬 과학·건강·환경
+4. 스레드 ③ 💼 엔지니어링·커리어
 
-각 메시지는 3,000자를 넘기지 않는다. 넘을 것 같으면 문장을 더 짧게 줄이고, 그래도 넘으면 해당 섹션을 스레드 답글 2개로 나눈다 (예: 🤖 AI·데이터 1/2, 2/2).
+각 메시지는 3,000자를 넘기지 않는다. 넘을 것 같으면 문장을 더 짧게 줄이고, 그래도 넘으면 해당 섹션을 스레드 답글 2개로 나눈다 (예: 💼 엔지니어링·커리어 1/2, 2/2).
 링크 미리보기(unfurl)가 지원되면 끈다.
 
 ### 부모 메시지 형식
@@ -79,83 +95,96 @@
 ```
 📚 **Daily English Brief** | 2026-10-06 (화)
 
-**오늘의 핵심 / Today's Headlines**
-• 🇰🇷 한국 뉴스 중 가장 중요한 이슈 한 줄
-  _English translation of the headline_
-• 🇺🇸 미국 뉴스 중 가장 중요한 이슈 한 줄
-  _English translation of the headline_
-• 🤖 AI·데이터 중 가장 중요한 이슈 한 줄
-  _English translation of the headline_
+**Today's Headlines / 오늘의 핵심**
+• 🌍 The most important world news headline
+  _세계 뉴스 중 가장 중요한 이슈 한 줄_
+• 🔬 The most important science, health, or environment headline
+  _과학·건강·환경 중 가장 중요한 이슈 한 줄_
+• 💼 The most important engineering or career headline
+  _엔지니어링·커리어 중 가장 중요한 이슈 한 줄_
 
 💡 **오늘의 표현**: `expression` — 뜻
 > 오늘 브리핑 영어 문장에서 가져온 예문
 
-🧵 스레드에서 섹션별 상세 보기: 🇰🇷 한국 · 🇺🇸 미국 · 🤖 AI·데이터
+🧵 스레드에서 섹션별 상세 보기: 🌍 세계 · 🔬 과학·건강·환경 · 💼 엔지니어링·커리어
 ```
 
-"오늘의 표현"은 오늘 브리핑의 영어 번역 중 실무나 뉴스에서 자주 쓰이고 외워둘 만한 표현 하나를 고른다.
+"오늘의 표현"은 오늘 브리핑의 영어 문장 중 실무나 뉴스에서 자주 쓰이고 외워둘 만한 표현 하나를 고른다.
 
 ### 스레드 답글 형식
 
-세 섹션 모두 같은 형식을 쓴다. 각 항목은 **한국어 1줄 → 영어 1줄을 3번 번갈아 쓰고 → 핵심 표현 → 링크** 순서다.
-한국어 문장 바로 아래에 그 문장의 영어 번역을 기울임으로 붙여서, 문장 단위로 바로 비교할 수 있게 한다.
+세 섹션 모두 같은 형식을 쓴다. 각 항목은 **영어 1줄 → 한국어 1줄을 5번 번갈아 쓰고 → 핵심 표현 → 링크** 순서다.
+영어 문장을 먼저 읽고, 바로 아래 기울임으로 붙인 한국어 번역으로 이해했는지 확인할 수 있게 한다.
+
+🌍·🔬 섹션의 5줄은 아래 역할을 따른다.
 
 ```
-🇰🇷 **한국 뉴스 / Korea News**
+🌍 **World News / 세계 뉴스**
 
-**1. 한국어 제목**
-_English Title_
-• 한국어 요약 1줄
-  _English line 1_
-• 한국어 요약 2줄
-  _English line 2_
-• 한국어 요약 3줄
-  _English line 3_
+**1. English Title**
+_한국어 제목_
+• What happened
+  _무슨 일이 있었는지_
+• Background or context
+  _배경·맥락_
+• Key details or numbers
+  _핵심 세부 내용·수치_
+• Reactions or impact
+  _반응·영향_
+• What comes next
+  _다음 전개·남은 쟁점_
 📝 `expression 1` 뜻 · `expression 2` 뜻 · `expression 3` 뜻
 🔗 [매체명](https://원문링크)
 
 **2. ...**
 ```
 
-AI·데이터 섹션은 제목 뒤에 출처 종류를 붙인다: `공식 문서`, `뉴스`, `Reddit r/dataengineering`, `X` 등.
+💼 엔지니어링·커리어 섹션은 제목 뒤에 출처 종류를 붙인다: `Engineering blog`, `Postmortem`, `Essay`, `Hacker News`, `Reddit r/ExperiencedDevs`, `X` 등.
 
 ```
-🤖 **AI·데이터 / AI & Data**
+💼 **Engineering & Career / 엔지니어링·커리어**
 
-**1. 한국어 제목** `공식 문서`
-_English Title_
-• 무엇이 발표·발생했는지
-  _What was announced or happened_
-• 핵심 수치나 세부 내용
-  _Key numbers or details_
-• 실무 관점: 데이터 엔지니어에게 주는 의미
-  _Why it matters for data engineers_
+**1. English Title** `Postmortem`
+_한국어 제목_
+• What happened or what the post is about
+  _무슨 일이 있었는지, 무슨 글인지_
+• The problem or context
+  _문제 상황·배경_
+• How they handled it or the main argument
+  _어떻게 해결했는지, 핵심 주장_
+• Results, numbers, or community reactions
+  _결과·수치·커뮤니티 반응_
+• Takeaway for data engineers
+  _실무 관점: 데이터 엔지니어가 가져갈 교훈_
 📝 ...
-🔗 [OpenAI](https://원문링크)
+🔗 [Cloudflare Blog](https://원문링크)
 ```
 
 ## 작성 규칙
 
-### 한국어 요약
+### 영어 요약
 
-- 항목마다 정확히 3줄, 각 줄은 한 문장으로 짧게
-- 사실만 쓰고 추측·의견은 넣지 않는다 (커뮤니티 출처의 "반응"과 AI·데이터의 "실무 관점" 줄은 예외)
+- 항목마다 정확히 5줄, 각 줄은 한 문장으로 짧게, 한 줄에 20단어 안팎
+- 5줄은 위 형식의 줄별 역할을 따른다. 역할에 맞는 사실이 출처에 없으면 그 줄은 다른 역할(예: 핵심 세부 내용 추가)로 바꿔도 되지만, 일반론이나 추측으로 줄을 채우지 않는다
+- 링크한 출처에서 확인한 사실만으로 5줄을 채우지 못하는 기사는 고르지 않고 다른 기사로 바꾼다
+- 원문 영어 기사의 표현을 최대한 살린다. 단, 원문 문장을 통째로 복사하지 않고 요약한다
+- 실제 영문 기사·기술 문서에서 쓰는 자연스러운 표현으로 쓴다. 어려운 수식어를 늘어놓지 않는다
+- 사실만 쓰고 추측·의견은 넣지 않는다 (커뮤니티 출처의 "반응"과 💼 섹션의 "실무 관점" 줄은 예외)
 - 숫자, 날짜, 고유명사는 원문 그대로
 - 요약에 쓴 수치·사실은 **그 항목에 링크한 출처에 나온 것만** 쓴다. 다른 매체의 검색 결과에서 본 수치를 섞지 않는다. 출처마다 수치가 다르면 그 수치는 빼거나, 링크한 출처의 수치만 쓴다
-- AI·데이터 섹션은 3줄 중 마지막 줄을 가능하면 "실무 관점"으로 쓴다
+- 💼 섹션은 5줄 중 마지막 줄을 가능하면 "실무 관점"으로 쓴다
 
-### 영어 번역
+### 한국어 번역
 
-- 한국어 3줄을 **줄 단위로 1:1 대응**시켜 번역하고, 각 한국어 줄 바로 아래에 붙인다. 학습자가 두 문장을 위아래로 바로 비교할 수 있어야 한다
-- 직역투가 아니라 **실제 영문 기사·기술 문서에서 쓰는 자연스러운 표현**으로 쓴다
-- 문장은 짧고 명확하게, 한 줄에 20단어 안팎. 어려운 수식어를 늘어놓지 않는다
-- 미국 뉴스와 공식 문서처럼 원문이 영어면 원문 표현을 최대한 살린다 (단, 원문 문장을 통째로 복사하지 않고 요약한다)
-- 고유명사는 공식 영문 표기를 쓴다 (예: 국토교통부 → Ministry of Land, Infrastructure and Transport, 한국은행 → Bank of Korea)
+- 영어 5줄을 **줄 단위로 1:1 대응**시켜 번역하고, 각 영어 줄 바로 아래에 붙인다. 학습자가 두 문장을 위아래로 바로 비교할 수 있어야 한다
+- 영어 문장에 없는 내용을 더하거나 빼지 않는다
+- 직역투가 아니라 자연스러운 한국어 기사 문장으로 쓴다
+- 고유명사는 국내 언론에서 통용되는 표기를 쓴다 (예: European Central Bank → 유럽중앙은행, WHO → 세계보건기구). 통용 표기가 없으면 원어를 그대로 둔다
 
 ### 📝 핵심 표현
 
-- 항목마다 영어 번역에 실제로 쓴 표현 2~3개를 고른다. **그 항목의 영어 문장에 글자 그대로 들어 있는 표현만** 쓴다. 원문 기사에만 있고 번역 문장에 없는 표현은 고르지 않는다
-- 단어 하나보다는 **덩어리 표현**(collocation, phrasal verb, 업계 용어)을 우선한다. 예: `rate cut` 금리 인하, `roll out` 출시하다, `backward compatible` 하위 호환되는
+- 항목마다 영어 요약에 실제로 쓴 표현 2~3개를 고른다. **그 항목의 영어 문장에 글자 그대로 들어 있는 표현만** 쓴다. 원문 기사에만 있고 요약 문장에 없는 표현은 고르지 않는다
+- 단어 하나보다는 **덩어리 표현**(collocation, phrasal verb, 업계 용어)을 우선한다. 예: `ceasefire talks` 휴전 협상, `peer-reviewed` 동료 심사를 거친, `root cause` 근본 원인
 - `the`, `company` 처럼 누구나 아는 쉬운 단어는 고르지 않는다
 - 한 브리핑 안에서 같은 표현을 반복하지 않는다
 
@@ -166,13 +195,15 @@ _English Title_
 
 ## 실행 절차
 
-1. 현재 KST 시각을 확인하고 수집 기간(뉴스 직전 48시간, AI·데이터 직전 7일)을 계산한다
-2. Slack에서 `daily-english-brief` 채널을 찾고, 최근 3일치 부모 메시지와 그 스레드 답글을 읽어 이미 소개한 기사를 파악한다
+1. 현재 KST 시각을 확인하고 수집 기간(🌍 직전 48시간, 🔬·💼 직전 7일)을 계산한다
+2. Slack에서 `daily-english-brief` 채널을 찾고, 최근 7일치 부모 메시지와 그 스레드 답글을 읽어 이미 소개한 기사를 파악한다
 3. 섹션별로 웹 검색을 통해 기사를 수집하고 선정한다
-4. 선정한 기사마다 한국어 3줄 요약 → 영어 번역 → 핵심 표현을 작성하고, 위 형식대로 메시지 4개를 만든다
+4. 선정한 기사마다 영어 5줄 요약 → 한국어 번역 → 핵심 표현을 작성하고, 위 형식대로 메시지 4개를 만든다
 5. **게시 전 점검**: 게시한 메시지는 수정할 수 없으므로 올리기 전에 4개 메시지 전체를 아래 항목으로 확인하고, 틀린 곳은 고친 뒤 게시한다
+   - 한국·미국 중심 뉴스, AI 모델·제품 소식, 데이터 도구 출시 소식이 섞여 있지 않은가
    - 📝 핵심 표현이 모두 그 항목의 영어 문장에 글자 그대로 들어 있는가
-   - 한국어 줄과 영어 줄이 번갈아 있고, 각 영어 줄이 바로 위 한국어 줄의 번역인가
+   - 항목마다 영어 5줄인가, 일반론이나 추측으로 채운 줄은 없는가
+   - 영어 줄과 한국어 줄이 번갈아 있고, 각 한국어 줄이 바로 위 영어 줄의 번역인가
    - 요약의 수치·사실이 모두 그 항목에 링크한 출처에서 나왔는가
    - 링크가 모두 실제로 확인한 URL인가, 이미 소개한 기사와 겹치지 않는가
    - 각 메시지가 3,000자 이내인가
