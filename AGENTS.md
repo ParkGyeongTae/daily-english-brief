@@ -127,15 +127,15 @@ Slack 전송 도구의 `unfurl_app_links`는 지정하지 않는다(false). 일�
 📚 **Daily English Brief** | 2026-10-06 (화)
 
 **Today's Headlines / 오늘의 핵심**
-• 📊 One-line headline of today's data story
+• One-line headline of today's data story
   _오늘 데이터 기사의 핵심 한 줄_
-• 🤖 One-line headline of today's AI story
+• One-line headline of today's AI story
   _오늘 AI 기사의 핵심 한 줄_
-• 💼 One-line headline of today's engineering or career story
+• One-line headline of today's engineering or career story
   _오늘 엔지니어링·커리어 기사의 핵심 한 줄_
-• 🌍 One-line headline of today's world news story
+• One-line headline of today's world news story
   _오늘 세계 뉴스 기사의 핵심 한 줄_
-• 🔬 One-line headline of today's science, health, or environment story
+• One-line headline of today's science, health, or environment story
   _오늘 과학·건강·환경 기사의 핵심 한 줄_
 
 🧵 스레드에서 기사별 상세 보기: 📊 데이터 · 🤖 AI · 💼 엔지니어링·커리어 · 🌍 세계 · 🔬 과학·건강·환경
