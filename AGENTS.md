@@ -114,6 +114,7 @@
 4. 자식 메시지: 💼 엔지니어링·커리어 기사
 5. 자식 메시지: 🌍 세계 뉴스 기사
 6. 자식 메시지: 🔬 과학·건강·환경 기사
+7. 실행 정보: 토큰 사용량과 소요 시간을 담은 마지막 답글 1개
 
 - 기사가 없는 섹션은 부모 메시지의 헤드라인 줄과 🧵 안내 줄의 해당 섹션 이름을 빼고, 그 섹션의 자식 메시지를 게시하지 않는다
 - 다섯 섹션 모두 기사가 없으면 아무것도 게시하지 않고, 최종 결과에 그 이유를 남긴다
@@ -201,6 +202,63 @@ _한국어 제목_
 
 🤖 **AI** 자식 메시지도 같은 형식을 쓰고, 첫 줄은 `🤖 **AI**`로 표시한다.
 
+### 실행 정보 답글 형식
+
+기사 자식 메시지의 게시를 모두 시도한 뒤(3번 실패해 건너뛴 메시지가 있어도), 아래 명령을 Bash로 실행해 이번 실행의 토큰 사용량을 집계한다.
+Claude Code가 실행 환경의 `~/.claude/projects/` 아래에 남기는 대화 기록(JSONL)에서 응답별 사용량을 합산한다.
+
+```bash
+python3 - <<'EOF'
+import glob, json, os
+from datetime import datetime, timezone, timedelta
+
+paths = set()
+for root in {os.path.expanduser("~"), "/root", "/home/user"}:
+    paths.update(glob.glob(f"{root}/.claude/projects/**/*.jsonl", recursive=True))
+if not paths:
+    print(json.dumps({"error": "기록 파일 없음"}))
+    raise SystemExit
+
+path = max(paths, key=os.path.getmtime)
+usage, first_ts, model = {}, None, None
+with open(path, encoding="utf-8") as f:
+    for n, line in enumerate(f):
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        first_ts = first_ts or e.get("timestamp")
+        m = e.get("message")
+        if e.get("type") == "assistant" and isinstance(m, dict) and m.get("usage"):
+            # 한 응답이 여러 줄로 기록되면 같은 message.id가 반복되므로 마지막 값만 쓴다
+            usage[m.get("id") or n] = m["usage"]
+            model = m.get("model") or model
+
+keys = ["input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"]
+result = {k: sum(u.get(k) or 0 for u in usage.values()) for k in keys}
+result.update(responses=len(usage), model=model, file=path)
+if first_ts:
+    start = datetime.fromisoformat(first_ts.replace("Z", "+00:00"))
+    result["start_kst"] = start.astimezone(timezone(timedelta(hours=9))).strftime("%H:%M")
+    result["elapsed_sec"] = int((datetime.now(timezone.utc) - start).total_seconds())
+print(json.dumps(result, ensure_ascii=False))
+EOF
+```
+
+출력값으로 아래 형식의 답글을 쓴다. 숫자는 천 단위 쉼표를 넣고, 소요 시간은 `elapsed_sec`을 `N분 N초`로 바꾼다.
+
+```
+⚙️ **실행 정보**
+• 토큰: 입력 12,345 · 출력 34,567 · 캐시 쓰기 123,456 · 캐시 읽기 1,234,567
+• 소요 시간: 6분 37초 (시작 06:34 KST, 집계 시점까지)
+• 모델: claude-opus-5-5 · 응답 62회
+```
+
+- 값은 명령 출력 그대로 쓰고 추정하거나 반올림하지 않는다. 집계 이후의 마지막 몇 턴은 포함되지 않는다
+- 명령이 실패하거나 `error`가 나오면 해당 줄에 `집계 불가 (오류 내용)`을 쓰고, 나머지 줄은 알 수 있는 값만 쓴다
+- 이 답글에는 기사가 없으므로 중복 방지 확인과 빠진 자식 메시지 판단에서 무시한다
+- 기사 자식 메시지를 하나도 게시하지 않은 실행(재실행에서 빠진 답글이 없는 경우 등)에서는 게시하지 않는다
+
 ## 작성 규칙
 
 ### 영어 요약
@@ -256,6 +314,7 @@ _한국어 제목_
    - 각 메시지가 3,000자 이내인가 (코드로 센 값)
    - 굵게·기울임·링크가 표준 Markdown 문법인가
 6. 부모 메시지를 채널에 게시하고, 각 기사의 자식 메시지를 그 메시지의 스레드 답글로 📊 → 🤖 → 💼 → 🌍 → 🔬 순서대로 게시한다
+   - 기사 자식 메시지를 모두 게시(또는 시도)한 뒤 "실행 정보 답글 형식"의 명령으로 사용량을 집계하고, 실행 정보 답글을 스레드의 마지막 답글로 게시한다. 재실행에서 빠진 기사 답글을 이어서 게시한 경우에도 그 뒤에 실행 정보 답글을 게시한다
 7. 게시 중 실패하면 실패한 메시지만 다시 시도한다. 응답이 실패여도 실제로는 게시됐을 수 있으므로, 다시 시도하기 전에 채널(부모 메시지)이나 스레드(답글)를 읽어 그 메시지가 없는지 확인한다. 이미 게시된 메시지를 중복으로 올리지 않는다
 8. 채널을 읽거나 게시할 수 없거나, 같은 메시지가 3번 연속 실패하면 더 시도하지 않고 종료한다
 9. 아래 형식으로 최종 결과를 남긴다
@@ -283,5 +342,5 @@ _한국어 제목_
 - 오늘 브리핑이 이미 있어 빠진 답글만 게시했거나 아무것도 게시하지 않았는지
 
 오류:
-- 실패한 메시지(부모/📊/🤖/💼/🌍/🔬), 시도 횟수, 오류 메시지 (없으면 "없음")
+- 실패한 메시지(부모/📊/🤖/💼/🌍/🔬/실행 정보), 시도 횟수, 오류 메시지 (없으면 "없음")
 ```
